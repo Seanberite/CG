@@ -1,0 +1,169 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1138\cocoasubrtf510
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fmodern\fcharset0 Courier;}
+{\colortbl;\red255\green255\blue255;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww15640\viewh14440\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+
+\f0\b\fs32 \cf0 Solutions/comments on TSBK07 2014 exam
+\b0\fs24 \
+\
+I have very varying amounts of comments. Some questions have rather straight forward solution in the book, and then I can't justify writing that again.\
+\
+
+\b 1. OpenGL programming
+\b0 \
+\
+The section about programming specific issues. Note that this is NEVER about names of function calls, rarely about syntax related issues, but more about the overall structure of programs, how data is passed, where computations take place\'85 Syntax related questions are generally given as incorrect code examples where you are expected to find errors. Even then, something as trivial as exact function names are never vital.\
+\
+a) Solar system question.\
+\
+This can be represented as a kind of scene graph (this kind of figure was not asked for in the question but it is a good help - and you should illustrate your symbols clearly):\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+
+\f1 \cf0 A ------ B ---------- C\
+|        |            |\
+sun      D - planet   E - moon\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+
+\f0 \cf0 \
+This can be drawn by\
+\
+	mat4 CAM = lookAt(...);\
+	A = CAM * T(xs, ys, zs);\
+	B = A * Ry(a) * T(rp, 0, 0); // Planet position\
+	C = B * Ry( c ) * T(rm, 0, 0); // Moon position\
+	D = B * Ry(b); // Planet pos + rotation\
+	E = C * Ry(d); // Moon pos + rotation\
+\
+	glUniformMatrix4fv(glGetUniformLocation(sunShader, "modelviewMatrix"), 1, GL_TRUE, A.m);\
+	drawSun();\
+	glUniformMatrix4fv(glGetUniformLocation(planetShader, "modelviewMatrix"), 1, GL_TRUE, D.m);\
+	drawPlanet();\
+	glUniformMatrix4fv(glGetUniformLocation(moonShader, "modelviewMatrix"), 1, GL_TRUE, E.m);\
+	drawMoon();\
+\
+We also have the projection matrix. We assume that this is created and uploaded elsewhere in the program.\
+\
+There are many ways to write this. The code above assumes VectorUtils with C++ code. Naturally, Mult() is fine. It is not an error to misspell glUniformMatrix4fv and glGetUniformLocation or getting parameters wrong, or writing the matrix creation calls in other ways, as long as I can see what you are doing! The math (in this case for handling hierarcical sysytems) and the uploading of data between CPU and GPU are the important parts.\
+\
+b) This refers to varying variables.\
+\
+Vertex:\
+\
+out something;\
+void main()\
+\{\
+	something = vertexdepedentvalue;\
+...\
+\}\
+\
+Fragment:\
+\
+in something;\
+void main()\
+\{\
+	someoutput = something;\
+...\
+\}\
+\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+
+\b \cf0 2. Transformations\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+
+\b0 \cf0 \
+a) See section 5.5 in the book. Section 6.3 covers the full 3D case.\
+\
+b) 2 and 5\
+\
+c) Inverse transpose of the rotation part of the model-to-view matrix.\
+\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+
+\b \cf0 3. Light, shading and ray-tracing
+\b0 \
+\
+a) See section 7.1.\
+\
+What I wanted for full score were three of the following:\
+\
+- Specular component exponent\
+- The view vector is missing! The specular component should use that instead of n!\
+- Clamp away negative light by using a max() function\
+- Multiple light sources should be supported (sum over the diffuse and specular parts)\
+\
+Other, less relevant (but not entirely wrong) answers may include\
+- Explicit support for colors\
+- The Blinn-Phong model\
+\
+b) (See 17.8.) Effects may incldue:\
+\
+- Anti-aliasing\
+- Out-of-focus effects\
+- Fuzzy reflections\
+- Fuzzy translucency\
+- Soft shadows\
+- Motion blur\
+\
+Out of these, anti-aliasing and motion blur are the most significantly different effects (anti-aliasing has the blur effect limited to one pixel distance, motion blur is temporal instead of spatial) so one of them should be included.\
+\
+c) By shadow rays (17.5)\
+\
+\
+
+\b 4. Surface detail
+\b0 \
+\
+a) See 10.6.\
+\
+b) See 10.2.2\
+\
+c) See 10.2.4\
+\
+\
+
+\b 5. Curve generation
+\b0 \
+\
+a) C1 if the first derivative is the same for both curves. G1 if they are proportional. See 8.7, 8.9 and 8.10.\
+\
+(There was no b.)\
+\
+c) See 15.3. The example at the end of the section suffices as answer to this question.\
+\
+\
+
+\b 6. Miscellaneous
+\b0 \
+\
+a) See 4.10. There are several solutions, several algorithm that can solve this, and I will not deduct points for presenting another 
+\i working
+\i0  method than the one I have in the book.\
+\
+b) See 9.2\
+\
+\
+
+\b 7. Collision detection and animation
+\b0 \
+\
+a) See 14.4. Scale, parallax scroll, shadows.\
+\
+b) See 14.9. A good solution should both illustrate the problem by using figures and outline the algorithm procedurally.\
+\
+\
+
+\b 8. Visible surface detection and large worlds
+\b0 \
+\
+a) This refers to the depth-buffer (Z-buffer) method. The solution is Painter's Algorithm, depth sorting. See 12.7. The sorting may be made on polygon level (expensive) or object level (reasonable). There are some other solutions though. Back-face/front-face culling does a good job on single (convex) models.\
+\
+b) Reset the rotation part of the model-to-view matrix. See 13.9.2.\
+\
+\
+Please note that all chapter references refer to the 2015 edition of the course book!\
+\
+}

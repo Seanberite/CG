@@ -1,0 +1,38 @@
+# set this variable to the director in which you saved the common files
+commondir = ../common/
+
+
+all : lab4-1 lab4-2 lab4-3 lab4-4 
+
+lab4-1:  $(commondir)GL_utilities.c $(commondir)Linux/MicroGlut.o $(commondir)loadobj.c $(commondir)VectorUtils3.c lab4-1.c $(commondir)LoadTGA.c 
+	gcc -std=c99 -Wall $(commondir)GL_utilities.c $(commondir)LoadTGA.c $(commondir)Linux/MicroGlut.o $(commondir)loadobj.c $(commondir)VectorUtils3.c lab4-1.c -o lab4-1 -I$(commondir) -I../common/Linux -lGL -lm -DGL_GLEXT_PROTOTYPES -lXt -lX11
+
+lab4-2:  $(commondir)GL_utilities.c $(commondir)Linux/MicroGlut.o $(commondir)loadobj.c $(commondir)VectorUtils3.c lab4-2.c $(commondir)LoadTGA.c 
+	gcc -std=c99 -Wall $(commondir)GL_utilities.c $(commondir)LoadTGA.c $(commondir)Linux/MicroGlut.o $(commondir)loadobj.c $(commondir)VectorUtils3.c lab4-2.c -o lab4-2 -I$(commondir) -I../common/Linux -lGL -lm -DGL_GLEXT_PROTOTYPES -lXt -lX11
+
+lab4-3:  $(commondir)GL_utilities.c $(commondir)Linux/MicroGlut.o $(commondir)loadobj.c $(commondir)VectorUtils3.c lab4-3.c $(commondir)LoadTGA.c 
+	gcc -std=c99 -Wall $(commondir)GL_utilities.c $(commondir)LoadTGA.c $(commondir)Linux/MicroGlut.o $(commondir)loadobj.c $(commondir)VectorUtils3.c lab4-3.c -o lab4-3 -I$(commondir) -I../common/Linux -lGL -lm -DGL_GLEXT_PROTOTYPES -lXt -lX11
+
+lab4-4:  $(commondir)GL_utilities.c $(commondir)Linux/MicroGlut.o $(commondir)loadobj.c $(commondir)VectorUtils3.c lab4-4.c $(commondir)LoadTGA.c 
+	gcc -std=c99 -Wall $(commondir)GL_utilities.c $(commondir)LoadTGA.c $(commondir)Linux/MicroGlut.o $(commondir)loadobj.c $(commondir)VectorUtils3.c lab4-4.c -o lab4-4 -I$(commondir) -I../common/Linux -lGL -lm -DGL_GLEXT_PROTOTYPES -lXt -lX11
+
+
+MicroGlut.o: MicroGlut.h 
+	gcc -w -c $(commondir)Linux/MicroGlut.c
+
+
+clean :
+	rm lab4-1
+	rm lab4-2
+	rm lab4-3
+	rm lab4-4
+
+
+	
+	
+
+
+
+
+
+

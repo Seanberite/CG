@@ -1,0 +1,10 @@
+#version 150
+
+out vec4 out_Color;
+in vec2 exTexCoord;
+uniform sampler2D skyTex;
+
+void main(void)
+{
+	out_Color = vec4(0.53, 0.53, 0.53, 0.1) * texture(skyTex, exTexCoord);
+}

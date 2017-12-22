@@ -1,0 +1,12 @@
+Origin is in the middle
+X is horizontal and positiv direction to the right
+Yes, you can send a matrix with colors to the shaders.
+
+In out - dynamiska värden som ändras varje gång shadern körs
+Uniform - static and the same for all vertices. 
+The position of the transformed vertex
+It uploads the matrix to the shaders. 
+
+200 ms just nu frame-rate
+
+we had to upluad the colors to the shaders and then add them as input/argument on the vert and frag. 
