@@ -333,11 +333,11 @@ void updateNightLight(){
 		lightSourcesDirectionsPositions[i].z = clusterList[i-1].pos[2];
 	}
   glUseProgram(programTerrain);
-  glUniform3fv(glGetUniformLocation(programTerrain, "lightSourcesDirPosArr"), 10, &lightSourcesDirectionsPositions[0].x);
+  glUniform3fv(glGetUniformLocation(programTerrain, "lightSourcesDirPosArr"), 10, &lightSourcesDirectionsPositions);
   glUseProgram(programObjects);
-  glUniform3fv(glGetUniformLocation(programObjects, "lightSourcesDirPosArr"), 10, &lightSourcesDirectionsPositions[0].x);
+  glUniform3fv(glGetUniformLocation(programObjects, "lightSourcesDirPosArr"), 10, &lightSourcesDirectionsPositions);
   glUseProgram(programTrees);
-  glUniform3fv(glGetUniformLocation(programTrees, "lightSourcesDirPosArr"), 10, &lightSourcesDirectionsPositions[0].x);
+  glUniform3fv(glGetUniformLocation(programTrees, "lightSourcesDirPosArr"), 10, &lightSourcesDirectionsPositions);
 }
 
 
@@ -558,14 +558,11 @@ void calcCamPos(){
 	 }
 
 	if (glutKeyIsDown('x')) {
-		printf("%.6f", p.x);
 	 }
 	if (glutKeyIsDown('z')) {
-		printf("%.6f", p.z);
 glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);	// Linear Filtered
 	 }
 	if (glutKeyIsDown('y')) {
-		printf("%.6f", p.y);
 glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);	// Linear Filtered
 	 }
    if (glutKeyIsDown('e')) {
@@ -799,20 +796,23 @@ void init(void)
 
 	// Upload lightsources and specifications
 	glUseProgram(programTerrain);
-	glUniform3fv(glGetUniformLocation(programTerrain, "lightSourcesDirPosArr"), 10, &lightSourcesDirectionsPositions[0].x);
-	glUniform3fv(glGetUniformLocation(programTerrain, "lightSourcesColorArr"), 10, &lightSourcesColorsArr[0].x);
+	glUniform3fv(glGetUniformLocation(programTerrain, "lightSourcesDirPosArr"), 10, &lightSourcesDirectionsPositions);
+
+	glUniform3fv(glGetUniformLocation(programTerrain, "lightSourcesColorArr"), 10, &lightSourcesColorsArr);
 	glUniform1fv(glGetUniformLocation(programTerrain, "specularExponent"), 10, specularExponent);
 	glUniform1iv(glGetUniformLocation(programTerrain, "isDirectional"), 10, isDirectional);
 
 	glUseProgram(programObjects);
-	glUniform3fv(glGetUniformLocation(programObjects, "lightSourcesDirPosArr"), 10, &lightSourcesDirectionsPositions[0].x);
-	glUniform3fv(glGetUniformLocation(programObjects, "lightSourcesColorArr"), 10, &lightSourcesColorsArr[0].x);
+	glUniform3fv(glGetUniformLocation(programObjects, "lightSourcesDirPosArr"), 10, &lightSourcesDirectionsPositions);
+	glUniform3fv(glGetUniformLocation(programObjects, "lightSourcesColorArr"), 10, &lightSourcesColorsArr);
 	glUniform1fv(glGetUniformLocation(programObjects, "specularExponent"), 10, specularExponent);
 	glUniform1iv(glGetUniformLocation(programObjects, "isDirectional"), 10, isDirectional);
 
   glUseProgram(programTrees);
-  glUniform3fv(glGetUniformLocation(programTrees, "lightSourcesDirPosArr"), 10, &lightSourcesDirectionsPositions[0].x);
-  glUniform3fv(glGetUniformLocation(programTrees, "lightSourcesColorArr"), 10, &lightSourcesColorsArr[0].x);
+  glUniform3fv(glGetUniformLocation(programTrees, "lightSourcesDirPosArr"), 10, &lightSourcesDirectionsPositions);
+  glUniform3fv(glGetUniformLocation(programTrees, "lightSourcesColorArr"), 10, &lightSourcesColorsArr);
+	  printf("%f\n",&lightSourcesColorsArr);
+
   glUniform1fv(glGetUniformLocation(programTrees, "specularExponent"), 10, specularExponent);
   glUniform1iv(glGetUniformLocation(programTrees, "isDirectional"), 10, isDirectional);
 
@@ -833,7 +833,7 @@ void display(void)
 	ballTransMat = T(ballXPos, ballYPos, ballZPos);
 	ballTotMat = Mult(ballTransMat, ballRotMat);
 
-	
+
 
 
   clusterMovement();
@@ -847,7 +847,7 @@ void display(void)
 	// Build matrix
 	camMatrix = lookAtv(p,l,v);
 	cameraSkyBox = mat3tomat4(mat4tomat3(camMatrix));
-  	cameraSkyBox = Mult(cameraSkyBox, Ry(-0.9));
+  cameraSkyBox = Mult(cameraSkyBox, Ry(-0.9));
 	cameraSkyBox = Mult(T(0.0, -0.1, 0.0), cameraSkyBox);
 
 	// ^^^^Do thing with skybox^^^
@@ -859,9 +859,9 @@ void display(void)
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
 
-		glActiveTexture(GL_TEXTURE2);
-		glBindTexture(GL_TEXTURE_2D, nightSky);
-		glUniform1i(glGetUniformLocation(programSkyBox, "skyTex"), 2);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, nightSky);
+	glUniform1i(glGetUniformLocation(programSkyBox, "skyTex"), 2);
 
 	DrawModel(skybox, programSkyBox,"inPosition" , NULL, "inTexCoord");
 
